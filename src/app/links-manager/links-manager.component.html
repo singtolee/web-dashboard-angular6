@@ -1,3 +1,21 @@
-<p>
-  links-manager works!
-</p>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm">
+      <form role="form" #formData='ngForm' (ngSubmit)="onSubmit(formData)">
+        <div class="form-group">
+          <label for="topLevelLinksTitle">Top level links title</label>
+          <input autofocus type="text" class="form-control" id="topLevelLinksTitle" placeholder="Title" [(ngModel)]="topLevelLinksTitle" name="topLevelLinksTitle" required>
+        </div>
+        <div class="form-group">
+          <label for="topLevelLinksUrl">Link Url</label>
+          <input type="text" class="form-control" id="topLevelLinksUrl" placeholder="Paste Link Url here" [(ngModel)]="topLevelLinksUrl" name="topLevelLinksUrl" required>
+        </div>
+        <button type="submit" [disabled]="!formData.valid" class="btn btn-success">Submit</button>
+      </form>
+    </div>
+    <div class="col-sm">
+      <a *ngFor="let item of topLevelLinks | async" [href]="item.url" target="_blank" class="list-group-item list-group-item-action">{{item.title}}</a>
+    </div>
+  </div>
+</div>
+
