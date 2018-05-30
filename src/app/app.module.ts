@@ -9,13 +9,15 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { UserPageComponent } from './user-page/user-page.component';
 export const firebaseConfig = environment.firebaseConfig;
 
 @NgModule({
   declarations: [
     AppComponent,
     routingComponents,
-    NavbarComponent
+    NavbarComponent,
+    UserPageComponent
   ],
   imports: [
     BrowserModule,
