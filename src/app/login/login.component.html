@@ -4,7 +4,7 @@
       <div class="card text-white mb-3">
         <div class="card-header bg-success text-center">
           <h4>Please Sign In First</h4>
-          <span *ngIf="error" class="text-warning">{{ error }}</span>
+          <span *ngIf="auth.error" class="text-warning">{{ auth.error }}</span>
         </div>
         <div class="card-body bg-white">
           <form role="form" #formData='ngForm' (ngSubmit)="onSubmit(formData)">

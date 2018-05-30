@@ -9,8 +9,8 @@ import { switchMap } from 'rxjs/operators';
 interface User {
   uid:string;
   email:string;
-  photoURL?:string;
-  displayName?:string;
+  //photoURL?:string;
+  //displayName?:string;
 }
 
 @Injectable({
@@ -19,16 +19,15 @@ interface User {
 export class AuthService {
 
   user:Observable<User>;
+  error:any;
 
   constructor(private afAuth: AngularFireAuth,
               private afs: AngularFirestore,
               private router: Router) {
                 this.user = this.afAuth.authState.pipe(switchMap(user=>{
                   if(user){
-                    console.log('I am HERE')
                     return this.afs.doc<User>(`USERS/${user.uid}`).valueChanges()
                   }else{
-                    console.log("NOT HERE")
                     return of(null)
                   }
                 }))
@@ -37,6 +36,15 @@ export class AuthService {
   googleLogin(){
     const provider = new firebase.auth.GoogleAuthProvider()
     return this.oAuthLogin(provider);
+  }
+
+  emailLogin(e,p){
+    this.afAuth.auth.signInWithEmailAndPassword(e,p).then((credential)=>{
+      this.updateUserData(credential.user);
+      this.router.navigate(['/console']);
+    }).catch((error)=>{
+      this.error=error;
+    })
   }
 
   private oAuthLogin(provider){
@@ -52,8 +60,8 @@ export class AuthService {
     const data :User = {
       uid: user.uid,
       email: user.email,
-      displayName: user.displayName,
-      photoURL: user.photoURL
+      //displayName: user.displayName,
+     // photoURL: user.photoURL
     }
 
     return userRef.set(data, {merge:true})
