@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { NgForm } from '@angular/forms';
 
 interface TopLevelLink {
-  title:string;
-  url:string;
+  title: string;
+  url: string;
 }
 @Component({
   selector: 'app-links-manager',
@@ -14,12 +14,12 @@ interface TopLevelLink {
 })
 export class LinksManagerComponent implements OnInit {
 
-  topLevelLinks:Observable<TopLevelLink[]>;
-  private topLevelLinksCol:AngularFirestoreCollection<TopLevelLink>;
-  private topLevelLinksTitle:string="";
-  private topLevelLinksUrl:string="";
+  topLevelLinks: Observable<TopLevelLink[]>;
+  private topLevelLinksCol: AngularFirestoreCollection<TopLevelLink>;
+  private topLevelLinksTitle: string = "";
+  private topLevelLinksUrl: string = "";
 
-  constructor(private db:AngularFirestore) {
+  constructor(private db: AngularFirestore) {
     this.topLevelLinksCol = db.collection<TopLevelLink>('TOP-LINKS');
     this.topLevelLinks = this.topLevelLinksCol.valueChanges();
   }
@@ -27,17 +27,16 @@ export class LinksManagerComponent implements OnInit {
   ngOnInit() {
   }
 
-  onSubmit(formData){
-    if(formData.valid){
+  onSubmit(formData) {
+    if (formData.valid) {
       const data: TopLevelLink = {
         title: formData.value.topLevelLinksTitle,
         url: formData.value.topLevelLinksUrl
       }
-      this.db.collection('TOP-LINKS').add(data).then((success)=>{
-        //formData.reset();
+      this.db.collection('TOP-LINKS').add(data).then((success) => {
+        this.topLevelLinksTitle = '';
+        this.topLevelLinksUrl = '';
       })
-      //this.topLevelLinksTitle = '';
-      //this.topLevelLinksUrl = '';
     }
   }
 
