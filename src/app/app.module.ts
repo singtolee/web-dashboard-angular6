@@ -5,11 +5,13 @@ import { environment } from '../environments/environment';
 import { AngularFireModule } from 'angularfire2'
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireStorageModule } from 'angularfire2/storage';
 
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { UserPageComponent } from './user-page/user-page.component';
+import { DropZoneDirective } from './drop-zone.directive';
 export const firebaseConfig = environment.firebaseConfig;
 
 @NgModule({
@@ -17,7 +19,8 @@ export const firebaseConfig = environment.firebaseConfig;
     AppComponent,
     routingComponents,
     NavbarComponent,
-    UserPageComponent
+    UserPageComponent,
+    DropZoneDirective
   ],
   imports: [
     BrowserModule,
@@ -25,7 +28,8 @@ export const firebaseConfig = environment.firebaseConfig;
     FormsModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    AngularFireStorageModule
   ],
   providers: [],
   bootstrap: [AppComponent]
