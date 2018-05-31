@@ -10,6 +10,7 @@ interface TopLevelLink {
   title: string;
   url: string;
   imgUrl:string;
+  clickCount:number;
 }
 @Component({
   selector: 'app-links-manager',
@@ -28,6 +29,7 @@ export class LinksManagerComponent implements OnInit {
   private topLevelLinksTitle: string = "";
   private topLevelLinksUrl: string = "";
   private imgUrl:string = "";
+  orderList = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
 
   constructor(private db: AngularFirestore, private storage: AngularFireStorage) {
     this.topLevelLinksCol = db.collection<TopLevelLink>('TOP-LINKS');
@@ -71,6 +73,7 @@ export class LinksManagerComponent implements OnInit {
         title: formData.value.topLevelLinksTitle,
         url: formData.value.topLevelLinksUrl,
         imgUrl: this.imgUrl,
+        clickCount: 0,
       }
       this.db.collection('TOP-LINKS').add(data).then((success) => {
         this.topLevelLinksTitle = '';
