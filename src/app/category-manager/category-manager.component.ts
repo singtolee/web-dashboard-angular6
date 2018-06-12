@@ -3,40 +3,34 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 import { AngularFireStorage, AngularFireUploadTask } from 'angularfire2/storage';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { NgForm } from '@angular/forms';
 
-
-interface TopLevelLink {
+interface Category {
   title: string;
-  url: string;
   imgUrl:string;
-  clickCount:number;
 }
+
 @Component({
-  selector: 'app-links-manager',
-  templateUrl: './links-manager.component.html',
-  styleUrls: ['./links-manager.component.css']
+  selector: 'app-category-manager',
+  templateUrl: './category-manager.component.html',
+  styleUrls: ['./category-manager.component.css']
 })
-export class LinksManagerComponent implements OnInit {
+export class CategoryManagerComponent implements OnInit {
 
   task: AngularFireUploadTask;
   percentage: Observable<number>;
   downloadURL: Observable<string>;
   isHovering: boolean;
 
-  mobileDir = "MOBILE-TOP-LINKS"
-  desktopDir = "TOP-LINKS"
+  dir = "CATEGORIES";
 
-  topLevelLinks: Observable<TopLevelLink[]>;
-  private topLevelLinksCol: AngularFirestoreCollection<TopLevelLink>;
-  private topLevelLinksTitle: string = "";
-  private topLevelLinksUrl: string = "";
-  private imgUrl:string = "";
-  orderList = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+  categories: Observable<Category[]>;
+  private categoriesCol: AngularFirestoreCollection<Category>;
+  private categoryTitle: string = "";
+  private imgUrl: string = "";
 
   constructor(private db: AngularFirestore, private storage: AngularFireStorage) {
-    this.topLevelLinksCol = db.collection<TopLevelLink>('TOP-LINKS');
-    this.topLevelLinks = this.topLevelLinksCol.valueChanges();
+    this.categoriesCol = db.collection<Category>(this.dir);
+    this.categories = this.categoriesCol.valueChanges();
   }
 
   toggleHover(event:boolean){
@@ -49,7 +43,7 @@ export class LinksManagerComponent implements OnInit {
       return
     }
 
-    const path = `LINK-IMG/${new Date().getTime()}`;
+    const path = `CATEGORY-IMG/${new Date().getTime()}`;
     const ref = this.storage.ref(path);
     this.task = this.storage.upload(path,file);
     this.percentage = this.task.percentageChanges();
@@ -62,28 +56,20 @@ export class LinksManagerComponent implements OnInit {
     return snapshot.state === 'running' && snapshot.bytesTransferred < snapshot.totalBytes
   }
 
-  ngOnInit() {
-  }
-
-  setUrl(r){
-    this.imgUrl = r;
-    console.log(this.imgUrl);
-  }
-
   onSubmit(formData) {
     if (formData.valid) {
-      const data: TopLevelLink = {
-        title: formData.value.topLevelLinksTitle,
-        url: formData.value.topLevelLinksUrl,
+      const data: Category = {
+        title: formData.value.categoryTitle,
         imgUrl: this.imgUrl,
-        clickCount: 0,
       }
-      this.db.collection(this.mobileDir).add(data).then((success) => {
-        this.topLevelLinksTitle = '';
-        this.topLevelLinksUrl = '';
+      this.db.collection(this.dir).add(data).then((success) => {
+        this.categoryTitle = '';
         this.imgUrl = '';
       })
     }
+  }
+
+  ngOnInit() {
   }
 
 }

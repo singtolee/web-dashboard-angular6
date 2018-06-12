@@ -12,6 +12,7 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { UserPageComponent } from './user-page/user-page.component';
 import { DropZoneDirective } from './drop-zone.directive';
+import { CategoryManagerComponent } from './category-manager/category-manager.component';
 export const firebaseConfig = environment.firebaseConfig;
 
 @NgModule({
@@ -20,7 +21,8 @@ export const firebaseConfig = environment.firebaseConfig;
     routingComponents,
     NavbarComponent,
     UserPageComponent,
-    DropZoneDirective
+    DropZoneDirective,
+    CategoryManagerComponent
   ],
   imports: [
     BrowserModule,
