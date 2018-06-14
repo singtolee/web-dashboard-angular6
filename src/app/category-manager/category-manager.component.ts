@@ -6,6 +6,7 @@ import { finalize } from 'rxjs/operators';
 
 interface Category {
   title: string;
+  keyWord:string;
   imgUrl:string;
 }
 
@@ -26,6 +27,7 @@ export class CategoryManagerComponent implements OnInit {
   categories: Observable<Category[]>;
   private categoriesCol: AngularFirestoreCollection<Category>;
   private categoryTitle: string = "";
+  private keyWord:string = "";
   private imgUrl: string = "";
 
   constructor(private db: AngularFirestore, private storage: AngularFireStorage) {
@@ -60,10 +62,12 @@ export class CategoryManagerComponent implements OnInit {
     if (formData.valid) {
       const data: Category = {
         title: formData.value.categoryTitle,
+        keyWord: formData.value.keyWord,
         imgUrl: this.imgUrl,
       }
       this.db.collection(this.dir).add(data).then((success) => {
         this.categoryTitle = '';
+        this.keyWord = '';
         this.imgUrl = '';
       })
     }
