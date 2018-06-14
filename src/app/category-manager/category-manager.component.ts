@@ -8,6 +8,7 @@ interface Category {
   title: string;
   keyWord:string;
   imgUrl:string;
+  displayOrder:number;
 }
 
 @Component({
@@ -28,11 +29,16 @@ export class CategoryManagerComponent implements OnInit {
   private categoriesCol: AngularFirestoreCollection<Category>;
   private categoryTitle: string = "";
   private keyWord:string = "";
+  private displayOrder:number = 100;
   private imgUrl: string = "";
 
+
   constructor(private db: AngularFirestore, private storage: AngularFireStorage) {
-    this.categoriesCol = db.collection<Category>(this.dir);
+    this.categoriesCol = db.collection<Category>(this.dir,ref =>{
+      return ref.orderBy('displayOrder')
+    });
     this.categories = this.categoriesCol.valueChanges();
+  
   }
 
   toggleHover(event:boolean){
@@ -64,11 +70,13 @@ export class CategoryManagerComponent implements OnInit {
         title: formData.value.categoryTitle,
         keyWord: formData.value.keyWord,
         imgUrl: this.imgUrl,
+        displayOrder: formData.value.displayOrder,
       }
       this.db.collection(this.dir).add(data).then((success) => {
         this.categoryTitle = '';
         this.keyWord = '';
         this.imgUrl = '';
+        this.displayOrder = 100;
       })
     }
   }
